@@ -1,0 +1,12 @@
+{
+  "name": "rusty-playerctl-presence",
+  "version": "0.1",
+  "manifest_version": "3",
+  "permissions": ["background"],
+  "content_scripts": [
+    {
+      "matches": ["https://music.youtube.com/*"],
+      "js": ["content_script.js"]
+    }
+  ]
+}

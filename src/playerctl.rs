@@ -1,3 +1,6 @@
+use std::fs::{metadata, File};
+use std::io;
+use std::io::Read;
 use std::time::Duration;
 
 use mpris::{LoopStatus, Metadata, PlaybackStatus, Progress};
@@ -28,28 +31,26 @@ pub fn get_artist(metadata: &Metadata) -> String {
         }
     }
 
-    return format!("Unknown artist");
+    format!("Unknown artist")
 }
 
 pub fn get_title(metadata: &Metadata) -> String {
-    let output = format!("{}", metadata.title().unwrap_or("Unknown title"));
-    print!("{}", output);
-    return output;
+    format!("{}", metadata.title().unwrap_or("Unknown title"))
 }
 
 pub fn print_playback_status(progress: &Progress) -> String {
     match progress.playback_status() {
-        PlaybackStatus::Playing => return format!("▶"),
-        PlaybackStatus::Paused => return format!("▮▮"),
-        PlaybackStatus::Stopped => return format!("◼"),
+        PlaybackStatus::Playing => format!("▶"),
+        PlaybackStatus::Paused => format!("▮▮"),
+        PlaybackStatus::Stopped => format!("◼"),
     }
 }
 
 pub fn print_shuffle_status(progress: &Progress) -> String {
     if progress.shuffle() {
-        return format!("🔀");
+        format!("🔀")
     } else {
-        return format!(" ");
+        format!(" ")
     }
 }
 
@@ -63,8 +64,8 @@ pub fn print_loop_status(progress: &Progress) -> String {
 
 pub fn get_thumbnail(metadata: &Metadata) -> String {
     if let Some(thumbnail) = metadata.art_url() {
-        return format!("{}", thumbnail);
+        format!("{}", thumbnail)
+    } else {
+        format!("/")
     }
-
-    return format!("Unknown thumbnail");
 }

@@ -1,0 +1,17 @@
+{
+  "name": "rusty-playerctl-presence",
+  "module": "index.ts",
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.5.4"
+  },
+  "type": "module",
+  "scripts": {
+    "bundle": "bun build ./chrome_extension/content_script.ts --outfile=./dist/content_script.js --minify",
+    "lint": "biome check .",
+    "fmt": "biome chekc . --write"
+  }
+}

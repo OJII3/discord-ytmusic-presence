@@ -1,0 +1,1 @@
+setInterval(()=>{const f=document.querySelector("img .image .ytmusic-player-bar");if(!f)throw new Error("Element not found: img .image .ytmusic-player-bar");const g=f.getAttribute("src");fetch("http://127:0.0.1:8477",{method:"POST",body:JSON.stringify({thumbnailUrl:g})})},5000);

@@ -1,7 +1,8 @@
 mod playerctl;
+mod server;
 
+use std::slice::RChunks;
 use std::time::Duration;
-use std::time::SystemTime;
 
 use anyhow::bail;
 use discord_sdk::activity::ActivityBuilder;
@@ -18,7 +19,7 @@ use discord_sdk::DiscordApp;
 use anyhow::Context as _;
 use discord_sdk::Subscriptions;
 use mpris::{PlayerFinder, ProgressTick};
-use tokio::time::sleep;
+// use tokio::time::sleep;
 use tracing::{error, info};
 
 const APP_ID: AppId = 1267187960227565651;
@@ -60,8 +61,13 @@ async fn main() -> anyhow::Result<()> {
         }
     });
 
+    tokio::task::spawn(async move { server::serve() });
+
     // Create Playerctl instance
     loop {
+        let Ok(_player) = PlayerFinder::new().unwrap().find_active() else {
+            continue;
+        };
         let player = PlayerFinder::new().unwrap().find_active().unwrap();
         let identity = player.identity();
         println!("Found player: {}", identity);
@@ -79,19 +85,15 @@ async fn main() -> anyhow::Result<()> {
         let time_elapsed = playerctl::get_time(Some(progress.position()));
         let time_total = playerctl::get_time(progress.length());
         let thumbnail = playerctl::get_thumbnail(progress.metadata());
-
-        // Set the activity
-        //drpc.set_activity(|act| {
-        //    return act
-        //        .assets(|asset| asset.large_image(thumbnail).large_text("YT Music"))
-        //        .state(format!("by {} - {} / {}", artist, time_elapsed, time_total))
-        //        .details(format!("{}", title))
-        //        .append_buttons(|button| button.label("Open").url("https://open.spotify.com"));
-        //})
-        //.expect("Failed to set activity");
+        println!(
+            "Artist: {}\nTitle: {}\nTime Elapsed: {}\nTime Total: {}\nThumbnail: {}",
+            artist, title, time_elapsed, time_total, thumbnail
+        );
 
         let rich_presence = ActivityBuilder::default()
-            .assets(Assets::default().large(thumbnail, Some("YT Music")))
+            .assets(
+                Assets::default().large("https://lh3.googleusercontent.com/1MvteP7Nv0sytWfj369xg7hH-xmaC8C3hhEJcxJxZPY9pArXicvyA0hKp7CpeRS0qwiFGbQ1dshfXic=w60-h60-l90-rj", Some("YT Music")),
+            )
             .state(format!("by {} - {} / {}", artist, time_elapsed, time_total))
             .details(title)
             .button(Button {
@@ -104,6 +106,6 @@ async fn main() -> anyhow::Result<()> {
             discord.update_activity(rich_presence).await?
         );
 
-        sleep(Duration::from_secs(1)).await;
+        // sleep(Duration::from_secs(1)).await;
     }
 }
