@@ -1,0 +1,7 @@
+{
+  "name": "ytmusic-discord-presence",
+  "path": "/home/ojii3/src/ojii3/rusty-playerctl-presence/target/debug/rusty-playerctl-presence",
+  "type": "stdio",
+  "supports_native_initiated_connections": true,
+  "allowed_origins": ["chrome-extension://jbcfbhoojemmddemlpndbkcbbolofeng/*"]
+}

@@ -24,6 +24,5 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": ["extenson/**/*.ts", "extenson/**/*.tsx"],
-  "extends": ["dist/*"]
+  "include": ["./chrome_extension/**/*.ts"]
 }
