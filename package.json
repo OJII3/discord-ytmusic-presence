@@ -3,14 +3,15 @@
   "module": "index.ts",
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/chrome": "^0.0.269"
   },
   "peerDependencies": {
     "typescript": "^5.5.4"
   },
   "type": "module",
   "scripts": {
-    "bundle": "bun build ./chrome_extension/content_script.ts --outfile=./dist/content_script.js --minify",
+    "bundle": "bun build ./chrome_extension/src/content_script.ts --outfile=./chrome_extension/dist/content_script.js --minify",
     "lint": "biome check .",
     "fmt": "biome chekc . --write"
   }
